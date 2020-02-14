@@ -17,3 +17,7 @@ vue init webpack social
 ./name_project
 
 npm run dev
+
+###Install bootstrap-vue -> https://bootstrap-vue.js.org/docs
+
+npm i vue bootstrap-vue bootstrap
