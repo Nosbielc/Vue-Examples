@@ -1,7 +1,5 @@
 <template>
-  <div class="">
-    <h2>Example Social</h2>
-
+  <div class="container">
     <div class="row">
       <div class="col s12 m6">
         <div class="card blue-grey darken-1">
@@ -17,7 +15,7 @@
         </div>
       </div>
 
-      <div class="col s12 m6">
+      <div class="col s18 m6">
         <div class="card blue-grey darken-1">
           <div class="card-content white-text">
             <span class="card-title">Card Title</span>
@@ -47,18 +45,18 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  h1, h2 {
-    font-weight: normal;
-  }
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-  a {
-    color: #42b983;
-  }
+  /*h1, h2 {*/
+  /*  font-weight: normal;*/
+  /*}*/
+  /*ul {*/
+  /*  list-style-type: none;*/
+  /*  padding: 0;*/
+  /*}*/
+  /*li {*/
+  /*  display: inline-block;*/
+  /*  margin: 0 10px;*/
+  /*}*/
+  /*a {*/
+  /*  color: #42b983;*/
+  /*}*/
 </style>
