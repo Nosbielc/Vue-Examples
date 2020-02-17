@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <site-template>
     <publicar-conteudo-vue/>
 
     <card-conteudo-vue imgPerfil="https://materializecss.com/images/yuna.jpg"
@@ -13,10 +13,12 @@
                                  title-post="Viagem de Férias">
       </card-conteudo-detalhe-vue>
     </card-conteudo-vue>
-  </span>
+  </site-template>
 </template>
 
 <script>
+
+  import SiteTemplate from "../../templates/SiteTemplate";
   import CardConteudoVue from "../../components/social/CardConteudoVue";
   import CardConteudoDetalheVue from "../../components/social/CardConteudoDetalheVue";
   import PublicarConteudoVue from "../../components/social/PublicarConteudoVue";
@@ -24,6 +26,7 @@
   export default {
     name: 'Home',
     components: {
+      SiteTemplate,
       CardConteudoVue,
       CardConteudoDetalheVue,
       PublicarConteudoVue
