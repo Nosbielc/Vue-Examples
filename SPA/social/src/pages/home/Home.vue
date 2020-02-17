@@ -1,41 +1,26 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col s12 m6">
-        <div class="card blue-grey darken-1">
-          <div class="card-content white-text">
-            <span class="card-title">Card Title</span>
-            <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
-          </div>
-          <div class="card-action">
-            <a href="#">This is a link</a>
-            <a href="#">This is a link</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col s18 m6">
-        <div class="card blue-grey darken-1">
-          <div class="card-content white-text">
-            <span class="card-title">Card Title</span>
-            <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
-          </div>
-          <div class="card-action">
-            <a href="#">This is a link</a>
-            <a href="#">This is a link</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
+  <card-conteudo-vue imgPerfil="https://materializecss.com/images/yuna.jpg"
+    nomePerfil="Maria das Graças" datePost="17/02/2020 13:30"
+                     imgPost="https://materializecss.com/images/sample-1.jpg"
+                     titlePost="Viagem de Férias"
+                     commentPost="É um sonho esta em um lugar como esse. Deus é lindo"
+                     countLikes="12359" keyPost="1">
+    <card-conteudo-detalhe-vue comment-post="É um sonho esta em um lugar como esse. Deus é lindo"
+                               img-post="https://materializecss.com/images/sample-1.jpg"
+                               title-post="Viagem de Férias">
+    </card-conteudo-detalhe-vue>
+  </card-conteudo-vue>
 </template>
 
 <script>
+  import CardConteudoVue from "../../components/social/CardConteudoVue";
+  import CardConteudoDetalheVue from "../../components/social/CardConteudoDetalheVue";
   export default {
     name: 'Home',
+    components: {
+      CardConteudoVue,
+      CardConteudoDetalheVue
+    },
     data () {
       return {
       }
