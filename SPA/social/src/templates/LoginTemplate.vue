@@ -7,13 +7,13 @@
     <main>
       <div class="container">
         <div class="row">
-          <grid-vue size="6">
+          <grid-vue size="8">
             <card-menu-vue>
-
+              <slot name="menuesquerdo"/>
             </card-menu-vue>
           </grid-vue>
-          <grid-vue size="6">
-            <slot />
+          <grid-vue size="4">
+              <slot name="principal"/>
           </grid-vue>
         </div>
       </div>
