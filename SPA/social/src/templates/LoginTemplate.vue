@@ -1,7 +1,8 @@
 <template>
   <span>
     <header>
-      <nav-bar cor="blue-grey" logo="Home" url="#"/>
+      <nav-bar cor="blue-grey" logo="Login" url="#/login">
+      </nav-bar>
     </header>
 
     <main>

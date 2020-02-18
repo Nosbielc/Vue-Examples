@@ -1,18 +1,36 @@
 <template>
   <site-template>
-    <publicar-conteudo-vue/>
 
-    <card-conteudo-vue imgPerfil="https://materializecss.com/images/yuna.jpg"
-      nomePerfil="Maria das Graças" datePost="17/02/2020 13:30"
-                       imgPost="https://materializecss.com/images/sample-1.jpg"
-                       titlePost="Viagem de Férias"
-                       commentPost="É um sonho esta em um lugar como esse. Deus é lindo"
-                       countLikes="12359" keyPost="1">
-      <card-conteudo-detalhe-vue comment-post="É um sonho esta em um lugar como esse. Deus é lindo"
-                                 img-post="https://materializecss.com/images/sample-1.jpg"
-                                 title-post="Viagem de Férias">
-      </card-conteudo-detalhe-vue>
-    </card-conteudo-vue>
+    <span slot="menuesquerdo">
+        <div class="row valign-wrapper">
+          <grid-vue size="4">
+            <img src="https://materializecss.com/images/yuna.jpg" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+          </grid-vue>
+          <grid-vue size="8">
+            <span class="black-text">
+              <h5>Maria Silva</h5>
+              This is a square image. Add the "circle" class to it to make it appear circular.
+            </span>
+          </grid-vue>
+        </div>
+    </span>
+
+    <span slot="principal">
+      <publicar-conteudo-vue/>
+
+        <card-conteudo-vue imgPerfil="https://materializecss.com/images/yuna.jpg"
+                           nomePerfil="Maria das Graças" datePost="17/02/2020 13:30"
+                           imgPost="https://materializecss.com/images/sample-1.jpg"
+                           titlePost="Viagem de Férias"
+                           commentPost="É um sonho esta em um lugar como esse. Deus é lindo"
+                           countLikes="12359" keyPost="1">
+          <card-conteudo-detalhe-vue comment-post="É um sonho esta em um lugar como esse. Deus é lindo"
+                                     img-post="https://materializecss.com/images/sample-1.jpg"
+                                     title-post="Viagem de Férias">
+          </card-conteudo-detalhe-vue>
+        </card-conteudo-vue>
+    </span>
+
   </site-template>
 </template>
 
