@@ -2,6 +2,7 @@
   <span>
     <header>
       <nav-bar cor="blue-grey" logo="Login" url="/login">
+        <li><router-link to="/cadastro">Cadastre-se</router-link></li>
       </nav-bar>
     </header>
 
