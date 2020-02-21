@@ -55,9 +55,13 @@
           }
         })
         .then( response => {
-          console.log(response);
+          if (response.status === 200 && response.data.access_token) {
+            // Login Realizado com sucesso
+          }
         } )
-        .catch( e => { console.log(e) } );
+        .catch( e => {
+            alert('Usuario ou Password não estão corretos');
+        } );
       }
     }
   }
