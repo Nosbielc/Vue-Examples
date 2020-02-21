@@ -9,10 +9,11 @@
     <span slot="principal">
 
       <h1 class="center-align">Login</h1>
-      <input type="text" class="email" placeholder="E-mail" value="">
-      <input type="password" placeholder="Senha" value="">
+      <input type="text" class="email" placeholder="E-mail" v-model="usuario.email">
+      <input type="password" placeholder="Senha" v-model="usuario.password">
       <p/>
-      <button id="btnEntrar" class="btn waves-effect waves-light blue-grey">Entrar</button>
+      <button id="btnEntrar" class="btn waves-effect waves-light blue-grey"
+              v-on:click="login()">Entrar</button>
       <router-link to="/cadastro" id="btnCadastrar"
               class="btn waves-effect waves-light blue-grey">Cadastre-se</router-link>
 
@@ -23,6 +24,7 @@
 
 <script>
   import LoginTemplate from "../../templates/LoginTemplate";
+  import axios from 'axios';
 
   export default {
     name: 'Login',
@@ -32,6 +34,30 @@
     },
     data () {
       return {
+        usuario: {email: '', password: ''}
+      }
+    },
+    methods: {
+      login(){
+        console.log(this.usuario.email + ' - ' + this.usuario.password);
+        const params = new URLSearchParams();
+        params.append("username", this.usuario.email);
+        params.append("password", this.usuario.password);
+        params.append("grant_type", "password");
+
+        axios.post('http://localhost:8081/oauth/token',
+          params
+        ,{
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept' : 'application/json',
+            'Authorization' : 'Basic YXBpYmFja2VuZC1jbGllbnQ6YXBpYmFja2VuZC1zZWNyZXQ='
+          }
+        })
+        .then( response => {
+          console.log(response);
+        } )
+        .catch( e => { console.log(e) } );
       }
     }
   }

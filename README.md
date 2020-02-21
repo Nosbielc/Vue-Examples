@@ -21,3 +21,7 @@ npm run dev
 ###Install bootstrap-vue -> https://bootstrap-vue.js.org/docs
 
 npm i vue bootstrap-vue bootstrap
+
+###Install Axios -> https://github.com/axios/axios
+
+npm install axios --save
