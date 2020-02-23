@@ -57,6 +57,8 @@
         .then( response => {
           if (response.status === 200 && response.data.access_token) {
             // Login Realizado com sucesso
+            sessionStorage.setItem("user", JSON.stringify(response.data));
+            console.log("Logado com sucesso !!!");
           }
         } )
         .catch( e => {

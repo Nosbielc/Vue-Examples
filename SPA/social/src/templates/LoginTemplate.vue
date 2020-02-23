@@ -2,7 +2,9 @@
   <span>
     <header>
       <nav-bar cor="blue-grey" logo="Login" url="/login">
-        <li><router-link to="/cadastro">Cadastre-se</router-link></li>
+        <li v-if="usuario"><router-link to="/home">Home</router-link></li>
+        <li v-if="!usuario"><router-link to="/cadastro">Cadastre-se</router-link></li>
+        <li v-if="usuario"><router-link to="/logout">Sair</router-link></li>
       </nav-bar>
     </header>
 
@@ -40,11 +42,23 @@
 
   export default {
     name: 'LoginTemplate',
+    data () {
+      return {
+        usuario : false
+      }
+    },
     components: {
       NavBar,
       FooterVue,
       GridVue,
       CardMenuVue
+    },
+    created() {
+      let userSessionStorage = sessionStorage.getItem("user");
+      if (userSessionStorage) {
+        this.usuario = JSON.parse(userSessionStorage);
+        console.log("Token do usuario logado é " + this.usuario.access_token);
+      }
     }
   }
 </script>
