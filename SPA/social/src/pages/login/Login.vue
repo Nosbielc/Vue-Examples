@@ -25,6 +25,7 @@
 <script>
   import LoginTemplate from "../../templates/LoginTemplate";
   import axios from 'axios';
+  import Home from "../home/Home";
 
   export default {
     name: 'Login',
@@ -39,7 +40,7 @@
     },
     methods: {
       login(){
-        console.log(this.usuario.email + ' - ' + this.usuario.password);
+
         const params = new URLSearchParams();
         params.append("username", this.usuario.email);
         params.append("password", this.usuario.password);
@@ -58,7 +59,7 @@
           if (response.status === 200 && response.data.access_token) {
             // Login Realizado com sucesso
             sessionStorage.setItem("user", JSON.stringify(response.data));
-            console.log("Logado com sucesso !!!");
+            this.$router.push(Home)
           }
         } )
         .catch( e => {

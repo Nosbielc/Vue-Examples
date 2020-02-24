@@ -3,8 +3,8 @@
     <header>
       <nav-bar cor="blue-grey" logo="Home" url="/">
         <li><router-link to="/">Home</router-link></li>
-        <li><router-link to="/login">Entrar</router-link></li>
-        <li><router-link to="/cadastro">Cadastre-se</router-link></li>
+        <li><router-link to="/perfil">{{perfilName}}</router-link></li>
+        <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>
       </nav-bar>
     </header>
 
@@ -39,14 +39,61 @@
   import FooterVue from "../components/layouts/FooterVue";
   import GridVue from "../components/layouts/GridVue";
   import CardMenuVue from "../components/layouts/CardMenuVue";
+  import Login from "../pages/login/Login";
+  import axios from "axios";
 
   export default {
     name: 'SiteTemplate',
+    data () {
+      return {
+        usuario : false,
+        perfilName : "Perfil"
+      }
+    },
     components: {
       NavBar,
       FooterVue,
       GridVue,
       CardMenuVue
+    },
+    created() {
+      let userSessionStorage = sessionStorage.getItem("user");
+      if (userSessionStorage) {
+        this.usuario = JSON.parse(userSessionStorage);
+        this.getDetailUser ();
+      } else {
+        this.$router.push(Login);
+      }
+    },
+    methods : {
+      getDetailUser () {
+
+        let authStr = 'Bearer '.concat(this.usuario.access_token);
+        let url = 'http://localhost:8081/users/principal';
+
+        axios.get(url,
+          {
+            headers: {
+              'Authorization' : authStr
+            }
+          })
+          .then( response => {
+            if (response.status === 200 && response.data) {
+              // Login Realizado com sucesso
+              sessionStorage.setItem("perfilName", response.data);
+              this.perfilName = response.data;
+            }
+          } )
+          .catch( e => {
+            console.log(e);
+            this.$router.push(Login);
+          } );
+      },
+      sair () {
+        sessionStorage.clear();
+        this.usuario = false;
+        this.$router.push(Login);
+      }
     }
   }
 </script>

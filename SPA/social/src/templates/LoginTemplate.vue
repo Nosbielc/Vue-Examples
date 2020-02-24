@@ -4,7 +4,7 @@
       <nav-bar cor="blue-grey" logo="Login" url="/login">
         <li v-if="usuario"><router-link to="/home">Home</router-link></li>
         <li v-if="!usuario"><router-link to="/cadastro">Cadastre-se</router-link></li>
-        <li v-if="usuario"><router-link to="/logout">Sair</router-link></li>
+        <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>
       </nav-bar>
     </header>
 
@@ -39,6 +39,7 @@
   import FooterVue from "../components/layouts/FooterVue";
   import GridVue from "../components/layouts/GridVue";
   import CardMenuVue from "../components/layouts/CardMenuVue";
+  import Home from "../pages/home/Home";
 
   export default {
     name: 'LoginTemplate',
@@ -57,7 +58,12 @@
       let userSessionStorage = sessionStorage.getItem("user");
       if (userSessionStorage) {
         this.usuario = JSON.parse(userSessionStorage);
-        console.log("Token do usuario logado é " + this.usuario.access_token);
+      }
+    },
+    methods: {
+      sair() {
+        sessionStorage.clear();
+        this.usuario = false;
       }
     }
   }
