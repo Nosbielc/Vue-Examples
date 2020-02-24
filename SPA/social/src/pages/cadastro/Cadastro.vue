@@ -9,10 +9,13 @@
     <span slot="principal">
 
         <h1 class="center-align">Cadastro</h1>
-        <input type="text" placeholder="Nome" v-model="cadastroData.username">
-        <input type="text" class="email" placeholder="E-mail" v-model="cadastroData.email">
-        <input type="password" placeholder="Senha" v-model="cadastroData.password">
-        <input type="password" placeholder="Confirme sua Senha" v-model="cadastroData.password2">
+        <input type="text" placeholder="Nome" v-model="cadastroData.username" class="validate">
+
+        <input type="email" class="validate" placeholder="E-mail" v-model="cadastroData.email">
+        <span class="helper-text" data-error="E-mail Invalido" data-success=""></span>
+
+        <input type="password" placeholder="Senha" class="validate" v-model="cadastroData.password">
+        <input type="password" placeholder="Confirme sua Senha" class="validate" v-model="cadastroData.password2">
         <p/>
         <button id="btnEnviar" class="btn waves-effect waves-light blue-grey"
                 v-on:click="cadastro()">Enviar</button>
