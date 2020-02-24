@@ -39,9 +39,9 @@
       }
     },
     methods: {
-      login(){
+      login () {
 
-        const params = new URLSearchParams();
+        let params = new URLSearchParams();
         params.append("username", this.usuario.email);
         params.append("password", this.usuario.password);
         params.append("grant_type", "password");
