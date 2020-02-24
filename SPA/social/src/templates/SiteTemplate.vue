@@ -2,7 +2,7 @@
   <span>
     <header>
       <nav-bar cor="blue-grey" logo="Home" url="/">
-        <li><router-link to="/">Home</router-link></li>
+<!--        <li><router-link to="/">Home</router-link></li>-->
         <li><router-link to="/perfil">{{perfilName}}</router-link></li>
         <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>
       </nav-bar>
@@ -80,8 +80,8 @@
           .then( response => {
             if (response.status === 200 && response.data) {
               // Login Realizado com sucesso
-              sessionStorage.setItem("perfilName", response.data);
-              this.perfilName = response.data;
+              sessionStorage.setItem("perfil", JSON.stringify(response.data));
+              this.perfilName = response.data.username;
             }
           } )
           .catch( e => {
