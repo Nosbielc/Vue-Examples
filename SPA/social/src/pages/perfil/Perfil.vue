@@ -14,13 +14,15 @@
         <input type="email" class="validate" placeholder="E-mail" v-model="atualizaPerfilData.email">
         <span class="helper-text" data-error="E-mail Invalido" data-success=""></span>
 
-        <input type="password" placeholder="Senha" class="validate" v-model="atualizaPerfilData.password">
-        <input type="password" placeholder="Confirme sua Senha" class="validate" v-model="atualizaPerfilData.password2">
+        <input type="password" placeholder="Senha Atual" class="validate" v-model="atualizaPerfilData.oldpassword">
+
+        <input type="password" placeholder="Nova Senha" class="validate" v-model="atualizaPerfilData.newpassword">
+        <input type="password" placeholder="Confirme sua Noava Senha" class="validate" v-model="atualizaPerfilData.newpassword2">
 
         <div class="file-field input-field">
           <div class="btn waves-effect waves-light blue-grey">
             <span>Imagem</span>
-            <input type="file">
+            <input type="file" accept=".jpeg">
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
@@ -49,42 +51,50 @@
     data () {
       return {
         atualizaPerfilData: {
+          id: 0,
           username: '',
           salary: 0,
           age: 18,
-          password: '',
-          password2: '',
+          oldpassword: '',
+          newpassword: '',
+          newpassword2: '',
           email: '',
           imagem: ''
-        }
+        },
+        perfilName : "Perfil",
+        usuarioSession : ''
       }
     },
     created () {
       this.atualizaPerfilData = JSON.parse(sessionStorage.getItem("perfil"));
+      this.usuarioSession = JSON.parse(sessionStorage.getItem("user"));
     },
     methods: {
       atualizaPerfil () {
 
-        let url = 'http://localhost:8081/cadastros';
+        let authStr = 'Bearer '.concat(this.usuarioSession.access_token);
+        let url = 'http://localhost:8081/users/user/perfil';
 
-        axios.post(url,
+        axios.put(url,
           JSON.stringify(this.atualizaPerfilData),
     {
             headers: {
               'Content-Type': 'application/json',
-              'Accept' : 'application/json'
+              'Accept' : 'application/json',
+              'Authorization' : authStr
             }
           })
           .then( response => {
-            if (response.status === 200 && response.data.id) {
-              this.login();
+            if (response.status === 200 && response.data) {
+              sessionStorage.setItem("perfil", JSON.stringify(response.data));
+              this.$router.push(Home);
             }
           } )
           .catch( e => {
             alert('Houve um erro no cadastro');
           } );
       },
-      login () {
+      enviaImagemPerfil () {
 
         let params = new URLSearchParams();
         params.append("username", this.cadastroData.email);
