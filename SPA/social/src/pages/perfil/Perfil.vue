@@ -3,7 +3,8 @@
 
     <span slot="menuesquerdo">
       <p/>
-      <img src="static/img/redessociais.png" class="responsive-img">
+<!--      <img src="static/img/redessociais.png" class="responsive-img">-->
+      <img :src="atualizaPerfilData.imagem" class="responsive-img">
     </span>
 
     <span slot="principal">
@@ -67,6 +68,7 @@
     created () {
       this.atualizaPerfilData = JSON.parse(sessionStorage.getItem("perfil"));
       this.usuarioSession = JSON.parse(sessionStorage.getItem("user"));
+      this.atualizaPerfilData.imagem = 'http://localhost:8081/full/files/' + this.atualizaPerfilData.id + '.jpeg';
     },
     methods: {
       atualizaPerfil () {
@@ -97,7 +99,7 @@
       },
       submitFile ( event ) {
         let authStr = 'Bearer '.concat(this.usuarioSession.access_token);
-        let url = 'http://localhost:8081/storage/perfil';
+        let url = 'http://localhost:8081/storage/perfil/' + this.atualizaPerfilData.id;
 
         /*
         *  Initialize the form data
