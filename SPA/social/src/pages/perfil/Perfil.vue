@@ -14,15 +14,13 @@
         <input type="email" class="validate" placeholder="E-mail" v-model="atualizaPerfilData.email">
         <span class="helper-text" data-error="E-mail Invalido" data-success=""></span>
 
-        <input type="password" placeholder="Senha Atual" class="validate" v-model="atualizaPerfilData.oldpassword">
-
         <input type="password" placeholder="Nova Senha" class="validate" v-model="atualizaPerfilData.newpassword">
         <input type="password" placeholder="Confirme sua Noava Senha" class="validate" v-model="atualizaPerfilData.newpassword2">
 
         <div class="file-field input-field">
           <div class="btn waves-effect waves-light blue-grey">
             <span>Imagem</span>
-            <input type="file" accept=".jpeg">
+            <input type="file" accept=".jpeg" v-on:change="enviaImagemPerfil">
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
@@ -41,6 +39,7 @@
   import SiteTemplate from "../../templates/SiteTemplate";
   import axios from "axios";
   import Home from "../home/Home";
+  import Login from "../login/Login";
 
   export default {
     name: 'Perfil',
@@ -55,11 +54,10 @@
           username: '',
           salary: 0,
           age: 18,
-          oldpassword: '',
+          imagem: '',
           newpassword: '',
           newpassword2: '',
-          email: '',
-          imagem: ''
+          email: ''
         },
         perfilName : "Perfil",
         usuarioSession : ''
@@ -86,39 +84,29 @@
           })
           .then( response => {
             if (response.status === 200 && response.data) {
-              sessionStorage.setItem("perfil", JSON.stringify(response.data));
-              this.$router.push(Home);
+              sessionStorage.clear();
+              this.$router.push(Login);
             }
           } )
           .catch( e => {
             alert('Houve um erro no cadastro');
           } );
       },
-      enviaImagemPerfil () {
+      enviaImagemPerfil ( event ) {
 
-        let params = new URLSearchParams();
-        params.append("username", this.cadastroData.email);
-        params.append("password", this.cadastroData.password);
-        params.append("grant_type", "password");
+        let imageFile = event.target.files || event.dataTransfer.files;
 
-        axios.post('http://localhost:8081/oauth/token',
-          params
-          ,{
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Accept' : 'application/json',
-              'Authorization' : 'Basic YXBpYmFja2VuZC1jbGllbnQ6YXBpYmFja2VuZC1zZWNyZXQ='
-            }
-          })
-          .then( response => {
-            if (response.status === 200 && response.data.access_token) {
-              sessionStorage.setItem("user", JSON.stringify(response.data));
-              this.$router.push(Home)
-            }
-          } )
-          .catch( e => {
-            alert('Usuario ou Password não estão corretos');
-          } );
+        if (!imageFile.length) {
+          return;
+        }
+
+        let reader = new FileReader();
+        reader.onloadend = ( event ) => {
+          this.atualizaPerfilData.imagem = event.target.result;
+        };
+
+        reader.readAsDataURL(imageFile[0]);
+
       }
     }
   }
