@@ -20,7 +20,7 @@
         <div class="file-field input-field">
           <div class="btn waves-effect waves-light blue-grey">
             <span>Imagem</span>
-            <input type="file" accept=".jpeg" v-on:change="enviaImagemPerfil">
+            <input type="file" id="file" ref="file" accept=".jpeg,.jpg" v-on:change="handleFileUpload">
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
@@ -59,6 +59,7 @@
           newpassword2: '',
           email: ''
         },
+        imagemPerfil: '',
         perfilName : "Perfil",
         usuarioSession : ''
       }
@@ -84,29 +85,50 @@
           })
           .then( response => {
             if (response.status === 200 && response.data) {
+              console.log("Pefil atualizado com sucesso");
+              this.submitFile();
               sessionStorage.clear();
               this.$router.push(Login);
             }
           } )
           .catch( e => {
-            alert('Houve um erro no cadastro');
+            console.log("Houve um erro na atualização do perfil")
           } );
       },
-      enviaImagemPerfil ( event ) {
+      submitFile ( event ) {
+        let authStr = 'Bearer '.concat(this.usuarioSession.access_token);
+        let url = 'http://localhost:8081/storage/perfil';
 
-        let imageFile = event.target.files || event.dataTransfer.files;
+        /*
+        *  Initialize the form data
+        */
+        let formData = new FormData();
 
-        if (!imageFile.length) {
-          return;
-        }
+        /*
+        *   Add the form data we need to submit
+        */
+        formData.append('file', this.imagemPerfil);
 
-        let reader = new FileReader();
-        reader.onloadend = ( event ) => {
-          this.atualizaPerfilData.imagem = event.target.result;
-        };
+        axios.post(url,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization' : authStr
+            }
+          })
+          .then( response => {
+            if (response.status === 200) {
+              console.log("Imagem de Perfil atualizado")
+            }
+          } )
+          .catch( e => {
+            console.log("Imagem de Perfil não foi atualizado")
+          } );
 
-        reader.readAsDataURL(imageFile[0]);
-
+      },
+      handleFileUpload ( event ) {
+        this.imagemPerfil = this.$refs.file.files[0];
       }
     }
   }
