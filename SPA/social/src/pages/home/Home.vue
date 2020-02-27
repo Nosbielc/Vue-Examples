@@ -50,6 +50,7 @@
       if (this.perfilData) {
         this.perfilData.imagem = 'http://localhost:8081/full/files/' + this.perfilData.id + '.jpeg';
         this.imagem = this.perfilData.imagem;
+        this.username = this.perfilData.username;
       }
     },
     data () {
