@@ -4,12 +4,12 @@
     <span slot="menuesquerdo">
         <div class="row valign-wrapper">
           <grid-vue size="4">
-            <img src="https://materializecss.com/images/yuna.jpg" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+            <img v-if="imagem" :src="imagem" :alt="username" class="circle responsive-img"> <!-- notice the "circle" class -->
           </grid-vue>
           <grid-vue size="8">
             <span class="black-text">
-              <h5>Maria Silva</h5>
-              This is a square image. Add the "circle" class to it to make it appear circular.
+              <h5 v-if="username">{{username}}</h5>
+              Descrição do perfil
             </span>
           </grid-vue>
         </div>
@@ -44,16 +44,37 @@
 
   export default {
     name: 'Home',
+    created () {
+      this.perfilData = JSON.parse(sessionStorage.getItem("perfil"));
+      this.usuarioSession = JSON.parse(sessionStorage.getItem("user"));
+      if (this.perfilData) {
+        this.perfilData.imagem = 'http://localhost:8081/full/files/' + this.perfilData.id + '.jpeg';
+        this.imagem = this.perfilData.imagem;
+      }
+    },
+    data () {
+      return {
+        perfilData: {
+          id: 0,
+          username: '',
+          salary: 0,
+          age: 18,
+          imagem: '',
+          newpassword: '',
+          newpassword2: '',
+          email: ''
+        },
+        usuarioSession : '',
+        username : '',
+        imagem : ''
+      }
+    },
     components: {
       SiteTemplate,
       CardConteudoVue,
       CardConteudoDetalheVue,
       PublicarConteudoVue,
       GridVue
-    },
-    data () {
-      return {
-      }
     }
   }
 </script>
