@@ -4,7 +4,7 @@
       <nav-bar cor="blue-grey" logo="Login" url="/login">
         <li v-if="usuario"><router-link to="/home">Home</router-link></li>
         <li v-if="!usuario"><router-link to="/cadastro">Cadastre-se</router-link></li>
-        <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>
+<!--        <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>-->
       </nav-bar>
     </header>
 
@@ -54,15 +54,9 @@
       CardMenuVue
     },
     created() {
-      let userSessionStorage = sessionStorage.getItem("user");
+      let userSessionStorage = this.$store.getters.getUsuario;
       if (userSessionStorage) {
-        this.usuario = JSON.parse(userSessionStorage);
-      }
-    },
-    methods: {
-      sair() {
-        sessionStorage.clear();
-        this.usuario = false;
+        this.usuario = this.$store.getters.getUsuario;
       }
     }
   }

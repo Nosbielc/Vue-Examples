@@ -31,3 +31,7 @@ npm i vue bootstrap-vue bootstrap
 ###Install Axios -> https://github.com/axios/axios
 
 npm install axios --save
+
+###Install Vuex -> https://vuex.vuejs.org/
+
+npm install vuex --save

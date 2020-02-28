@@ -88,12 +88,39 @@
           })
           .then( response => {
             if (response.status === 200 && response.data.access_token) {
+              // Login Realizado com sucesso
+              this.$store.commit('setUsuario', response.data);
               sessionStorage.setItem("user", JSON.stringify(response.data));
-              this.$router.push(Home)
+              // this.$router.push(Home)
+              this.getDetailUser ();
             }
           } )
           .catch( e => {
             alert('Usuario ou Password não estão corretos');
+          } );
+      },
+      getDetailUser () {
+
+        let authStr = 'Bearer '.concat(this.$store.getters.getToken);
+        let url = this.$urlApi + '/users/principal';
+
+        this.$http.get(url,
+          {
+            headers: {
+              'Authorization' : authStr
+            }
+          })
+          .then( response => {
+            if (response.status === 200 && response.data) {
+              // Login Realizado com sucesso
+              this.$store.commit('setPerfil', response.data);
+              sessionStorage.setItem("perfil", JSON.stringify(response.data));
+              this.$router.push(Home);
+            }
+          } )
+          .catch( e => {
+            console.log(e);
+            this.$router.go(0);
           } );
       }
     }

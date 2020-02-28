@@ -4,7 +4,7 @@
       <nav-bar cor="blue-grey" logo="Home" url="/">
 <!--        <li><router-link to="/">Home</router-link></li>-->
         <li><router-link to="/perfil">{{perfilName}}</router-link></li>
-        <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>
+        <li v-if="usuario"><a v-on:click="sair">Sair</a></li>
       </nav-bar>
     </header>
 
@@ -62,39 +62,18 @@
       CardMenuVue
     },
     created() {
-      let userSessionStorage = sessionStorage.getItem("user");
-      if (userSessionStorage) {
-        this.usuario = JSON.parse(userSessionStorage);
-        this.getDetailUser ();
+      let userSessionStorage = this.$store.getters.getUsuario;
+      let perfilSessionStorage = this.$store.getters.getPerfil;
+      if (userSessionStorage && perfilSessionStorage) {
+        this.usuario = this.$store.getters.getUsuario;
+        this.perfilName = this.$store.getters.getPerfil.username;
       } else {
         this.$router.push(Login);
       }
     },
     methods : {
-      getDetailUser () {
-
-        let authStr = 'Bearer '.concat(this.usuario.access_token);
-        let url = this.$urlApi + '/users/principal';
-
-        this.$http.get(url,
-          {
-            headers: {
-              'Authorization' : authStr
-            }
-          })
-          .then( response => {
-            if (response.status === 200 && response.data) {
-              // Login Realizado com sucesso
-              sessionStorage.setItem("perfil", JSON.stringify(response.data));
-              this.perfilName = response.data.username;
-            }
-          } )
-          .catch( e => {
-            console.log(e);
-            this.$router.push(Login);
-          } );
-      },
       sair () {
+        this.$store.commit('setUsuario', null);
         sessionStorage.clear();
         this.usuario = false;
         this.$router.push(Login);
