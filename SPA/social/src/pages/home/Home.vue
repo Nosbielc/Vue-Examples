@@ -48,7 +48,7 @@
       this.perfilData = JSON.parse(sessionStorage.getItem("perfil"));
       this.usuarioSession = JSON.parse(sessionStorage.getItem("user"));
       if (this.perfilData) {
-        this.perfilData.imagem = 'http://localhost:8081/full/files/' + this.perfilData.id + '.jpeg';
+        this.perfilData.imagem = this.$urlApi + '/full/files/' + this.perfilData.id + '.jpeg';
         this.imagem = this.perfilData.imagem;
         this.username = this.perfilData.username;
       }

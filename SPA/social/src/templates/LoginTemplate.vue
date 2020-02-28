@@ -39,7 +39,6 @@
   import FooterVue from "../components/layouts/FooterVue";
   import GridVue from "../components/layouts/GridVue";
   import CardMenuVue from "../components/layouts/CardMenuVue";
-  import Home from "../pages/home/Home";
 
   export default {
     name: 'LoginTemplate',

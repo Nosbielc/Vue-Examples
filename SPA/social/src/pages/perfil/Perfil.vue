@@ -38,8 +38,6 @@
 
 <script>
   import SiteTemplate from "../../templates/SiteTemplate";
-  import axios from "axios";
-  import Home from "../home/Home";
   import Login from "../login/Login";
 
   export default {
@@ -68,15 +66,15 @@
     created () {
       this.atualizaPerfilData = JSON.parse(sessionStorage.getItem("perfil"));
       this.usuarioSession = JSON.parse(sessionStorage.getItem("user"));
-      this.atualizaPerfilData.imagem = 'http://localhost:8081/full/files/' + this.atualizaPerfilData.id + '.jpeg';
+      this.atualizaPerfilData.imagem = this.$urlApi + '/full/files/' + this.atualizaPerfilData.id + '.jpeg';
     },
     methods: {
       atualizaPerfil () {
 
         let authStr = 'Bearer '.concat(this.usuarioSession.access_token);
-        let url = 'http://localhost:8081/users/user/perfil';
+        let url = this.$urlApi + '/users/user/perfil';
 
-        axios.put(url,
+        this.$http.put(url,
           JSON.stringify(this.atualizaPerfilData),
     {
             headers: {
@@ -99,7 +97,7 @@
       },
       submitFile ( event ) {
         let authStr = 'Bearer '.concat(this.usuarioSession.access_token);
-        let url = 'http://localhost:8081/storage/perfil/' + this.atualizaPerfilData.id;
+        let url = this.$urlApi + '/storage/perfil/' + this.atualizaPerfilData.id;
 
         /*
         *  Initialize the form data
@@ -111,7 +109,7 @@
         */
         formData.append('file', this.imagemPerfil);
 
-        axios.post(url,
+        this.$http.post(url,
           formData,
           {
             headers: {

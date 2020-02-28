@@ -24,7 +24,6 @@
 
 <script>
   import LoginTemplate from "../../templates/LoginTemplate";
-  import axios from 'axios';
   import Home from "../home/Home";
 
   export default {
@@ -46,7 +45,7 @@
         params.append("password", this.usuario.password);
         params.append("grant_type", "password");
 
-        axios.post('http://localhost:8081/oauth/token',
+        this.$http.post(this.$urlApi + '/oauth/token',
           params
         ,{
           headers: {

@@ -46,7 +46,6 @@
   import GridVue from "../components/layouts/GridVue";
   import CardMenuVue from "../components/layouts/CardMenuVue";
   import Login from "../pages/login/Login";
-  import axios from "axios";
 
   export default {
     name: 'SiteTemplate',
@@ -75,9 +74,9 @@
       getDetailUser () {
 
         let authStr = 'Bearer '.concat(this.usuario.access_token);
-        let url = 'http://localhost:8081/users/principal';
+        let url = this.$urlApi + '/users/principal';
 
-        axios.get(url,
+        this.$http.get(url,
           {
             headers: {
               'Authorization' : authStr

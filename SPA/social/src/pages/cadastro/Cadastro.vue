@@ -28,7 +28,6 @@
 
 <script>
   import LoginTemplate from "../../templates/LoginTemplate";
-  import axios from "axios";
   import Home from "../home/Home";
 
   export default {
@@ -52,9 +51,9 @@
     methods: {
       cadastro () {
 
-        let url = 'http://localhost:8081/cadastros';
+        let url = this.$urlApi + '/cadastros';
 
-        axios.post(url,
+        this.$http.post(url,
           JSON.stringify(this.cadastroData),
     {
             headers: {
@@ -78,7 +77,7 @@
         params.append("password", this.cadastroData.password);
         params.append("grant_type", "password");
 
-        axios.post('http://localhost:8081/oauth/token',
+        this.$http.post(this.$urlApi + '/oauth/token',
           params
           ,{
             headers: {
