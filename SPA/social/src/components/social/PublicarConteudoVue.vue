@@ -25,7 +25,7 @@
       GridVue
     },
     created () {
-      this.usuarioSession = JSON.parse(sessionStorage.getItem("user"));
+      this.usuarioSession = this.$store.getters.getUsuario;
     },
     data () {
       return {
@@ -36,7 +36,7 @@
     methods : {
       addConteudo () {
 
-        let authStr = 'Bearer '.concat(this.usuarioSession.access_token);
+        let authStr = 'Bearer '.concat(this.$store.getters.getToken);
         let url = this.$urlApi + '/postages/postage';
 
         this.$http.post(url,
@@ -51,6 +51,8 @@
           .then( response => {
             if (response.status === 200) {
               console.log("Post Publicado => " + response.data);
+              this.conteudo = { id : 0, title : '', text : '', link : '', imagem : '' };
+              this.$store.commit("setConteudosTemp", response.data);
             }
           } )
           .catch( e => {

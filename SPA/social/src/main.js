@@ -19,7 +19,8 @@ var store = {
       : null,
     perfil :  sessionStorage.getItem("perfil")
       ? JSON.parse(sessionStorage.getItem("perfil"))
-      : null
+      : null,
+    conteudosTemp : []
   },
   getters : {
     getUsuario: state => {
@@ -30,6 +31,9 @@ var store = {
     },
     getPerfil: state => {
       return state.perfil;
+    },
+    getConteudosTemp: state => {
+      return state.conteudosTemp;
     }
   },
   mutations : {
@@ -38,6 +42,9 @@ var store = {
     },
     setPerfil(state, n) {
       state.perfil = n;
+    },
+    setConteudosTemp(state, n) {
+      state.conteudosTemp = n;
     }
   }
 }

@@ -32,6 +32,11 @@
     components: {
       LoginTemplate
     },
+    created() {
+      this.$store.commit('setPerfil', null);
+      this.$store.commit('setUsuario', null);
+      sessionStorage.clear();
+    },
     data () {
       return {
         usuario: {email: '', password: ''}

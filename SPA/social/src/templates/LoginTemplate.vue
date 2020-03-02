@@ -2,7 +2,7 @@
   <span>
     <header>
       <nav-bar cor="blue-grey" logo="Login" url="/login">
-        <li v-if="usuario"><router-link to="/home">Home</router-link></li>
+        <li v-if="usuario"><router-link to="/">Home</router-link></li>
         <li v-if="!usuario"><router-link to="/cadastro">Cadastre-se</router-link></li>
 <!--        <li v-if="usuario"><a v-on:click="sair()">Sair</a></li>-->
       </nav-bar>
