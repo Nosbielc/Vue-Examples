@@ -27,7 +27,8 @@
                            countLikes="12359" keyPost="1">
           <card-conteudo-detalhe-vue :comment-post="item.text"
                                      :img-post="item.imagem"
-                                     :title-post="item.title">
+                                     :title-post="item.title"
+                                     :link-post="item.link">
           </card-conteudo-detalhe-vue>
         </card-conteudo-vue>
 

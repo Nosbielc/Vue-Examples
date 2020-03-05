@@ -2,12 +2,20 @@
   <span>
 
       <div v-if="imgPost" class="card-image">
+        <a v-if="linkPost" :href="linkPost" target="_blank">
+          <img :src="imgPost">
+          <span class="card-title">{{titlePost}}</span>
+        </a>
+      </div>
+      <span v-if="!linkPost">
         <img :src="imgPost">
         <span class="card-title">{{titlePost}}</span>
-      </div>
+      </span>
 
       <div v-if="commentPost" class="card-content">
         <p>{{commentPost}}</p>
+        <br>
+        <a v-if="linkPost && !imgPost" :href="linkPost" target="_blank">Saiba mais</a>
       </div>
 
   </span>
@@ -17,7 +25,7 @@
 
   export default {
     name: 'CardConteudoDetalheVue',
-    props: ['imgPost','titlePost','commentPost',],
+    props: ['imgPost','titlePost','commentPost','linkPost'],
     components: {
 
     },
