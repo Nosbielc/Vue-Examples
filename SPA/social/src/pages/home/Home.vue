@@ -24,7 +24,7 @@
                            :imgPost="item.imagem"
                            :titlePost="item.title"
                            :commentPost="item.text"
-                           countLikes="12359" keyPost="1">
+                           :countLikes="12359" :keyPost="item.id">
           <card-conteudo-detalhe-vue :comment-post="item.text"
                                      :img-post="item.imagem"
                                      :title-post="item.title"
