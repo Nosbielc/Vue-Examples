@@ -18,8 +18,11 @@
       </div>
       <div class="card-action right-align">
         <p>
+          <a v-on:click="like()" class="btn-floating blue-grey pulse">
+            <i class="material-icons">{{liked}}</i>
+            <span class="new badge blue-grey">12</span>
+          </a>
           <a class="btn-floating blue-grey"><i class="material-icons">insert_comment</i></a>
-          <a class="btn-floating blue-grey pulse"><i class="material-icons">favorite_border</i></a>
         </p>
       </div>
 
@@ -39,7 +42,16 @@
     },
     data () {
       return {
-
+        liked : 'favorite'
+      }
+    },
+    methods : {
+      like() {
+        if (this.liked === 'favorite') {
+          this.liked = 'favorite_border';
+        } else {
+          this.liked = 'favorite';
+        }
       }
     }
   }

@@ -107,8 +107,8 @@
             }
           })
           .then( response => {
-            if (response.status === 200 && response.data) {
-              this.$store.commit("setConteudosTemp", response.data);
+            if (response.status === 200 && response.data && response.data.content) {
+              this.$store.commit("setConteudosTemp", response.data.content);
             }
           } )
           .catch( e => {
