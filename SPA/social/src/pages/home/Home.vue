@@ -24,7 +24,9 @@
                            :imgPost="item.imagem"
                            :titlePost="item.title"
                            :commentPost="item.text"
-                           :countLikes="12359" :keyPost="item.id">
+                           :countLikes="item.enjoys.length"
+                           :keyPost="item.id"
+                           :conteudo-full="item">
           <card-conteudo-detalhe-vue :comment-post="item.text"
                                      :img-post="item.imagem"
                                      :title-post="item.title"

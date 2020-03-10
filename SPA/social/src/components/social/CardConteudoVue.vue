@@ -36,19 +36,28 @@
   export default {
     name: 'CardConteudoVue',
     props: ['imgPerfil', 'nomePerfil', 'datePost', 'commentPost',
-      'countLikes', 'keyPost', 'titlePost', 'imgPost'],
+      'countLikes', 'keyPost', 'titlePost', 'imgPost', 'conteudoFull'],
     components: {
       GridVue
     },
     data () {
       return {
-        liked : 'favorite',
-        totalCurtidas: 0
+        liked : 'favorite_border',
+        totalCurtidas : 0
       }
     },
     created() {
-      this.getTotalCurtidas ();
-      this.isLikePost ();
+      // this.getTotalCurtidas (); conteudo hoje já é carregado na requisição de postagens
+      // this.isLikePost (); conteudo hoje já é carregado na requisição de postagens
+      this.totalCurtidas = this.countLikes;
+
+      let _perfil = this.$store.getters.getPerfil;
+      this.conteudoFull.enjoys.forEach( enjoy => {
+        if (enjoy.user && enjoy.user.id === _perfil.id) {
+              this.liked = 'favorite';
+        }
+      });
+
     },
     methods : {
       getTotalCurtidas () {
