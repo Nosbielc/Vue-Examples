@@ -16,14 +16,34 @@
         <slot/>
 
       </div>
-      <div class="card-action right-align">
-        <p>
+      <div class="card-action">
+        <p class="right-align">
           <a v-on:click="like(keyPost)" class="btn-floating blue-grey pulse">
             <i class="material-icons">{{liked}}</i>
-            <span class="new badge blue-grey">{{totalCurtidas}}</span>
+            <span class="blue-grey">{{totalCurtidas}}</span>
           </a>
-          <a class="btn-floating blue-grey"><i class="material-icons">insert_comment</i></a>
+          <a v-on:click="openComments()" class="btn-floating blue-grey">
+            <i class="material-icons">insert_comment</i>
+            <span class="blue-grey">{{countComments}}</span>
+          </a>
         </p>
+        <p v-if="showComments" class="right-align">
+          <input type="text" placeholder="Comentar">
+          <button class="btn waves-effect waves-light blue-grey">send</button>
+        </p>
+
+        <p v-if="showComments">
+          <ul class="collection">
+            <li class="collection-item avatar">
+              <img src="https://materializecss.com/images/yuna.jpg" alt="" class="circle">
+              <span class="title">Maria Clara <small> - 12h30 12/02/2020</small></span>
+              <p>
+                Gostei desse contéudo
+              </p>
+            </li>
+          </ul>
+        </p>
+
       </div>
 
     </div>
@@ -36,14 +56,15 @@
   export default {
     name: 'CardConteudoVue',
     props: ['imgPerfil', 'nomePerfil', 'datePost', 'commentPost',
-      'countLikes', 'keyPost', 'titlePost', 'imgPost', 'conteudoFull'],
+      'countLikes', 'countComments', 'keyPost', 'titlePost', 'imgPost', 'conteudoFull'],
     components: {
       GridVue
     },
     data () {
       return {
         liked : 'favorite_border',
-        totalCurtidas : 0
+        totalCurtidas : 0,
+        showComments : false
       }
     },
     created() {
@@ -165,6 +186,9 @@
         //   alert("Like no id: " + id);
         //   this.liked = 'favorite';
         // }
+      },
+      openComments() {
+        this.showComments = !this.showComments;
       }
     }
   }

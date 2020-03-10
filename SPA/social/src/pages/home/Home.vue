@@ -25,6 +25,7 @@
                            :titlePost="item.title"
                            :commentPost="item.text"
                            :countLikes="item.enjoys.length"
+                           :countComments="item.expresses.length"
                            :keyPost="item.id"
                            :conteudo-full="item">
           <card-conteudo-detalhe-vue :comment-post="item.text"
