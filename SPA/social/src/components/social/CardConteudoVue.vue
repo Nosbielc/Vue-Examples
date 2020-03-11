@@ -20,25 +20,25 @@
         <p class="right-align">
           <a v-on:click="like(keyPost)" class="btn-floating blue-grey pulse">
             <i class="material-icons">{{liked}}</i>
-            <span class="blue-grey">{{totalCurtidas}}</span>
+            <span class="badge black-text circle">{{totalCurtidas}}</span>
           </a>
-          <a v-on:click="openComments()" class="btn-floating blue-grey">
+          <a v-on:click="openComments()" class="btn-floating blue-grey pulse">
             <i class="material-icons">insert_comment</i>
-            <span class="blue-grey">{{countComments}}</span>
+            <span class="badge black-text circle">{{countComments}}</span>
           </a>
         </p>
         <p v-if="showComments" class="right-align">
-          <input type="text" placeholder="Comentar">
-          <button class="btn waves-effect waves-light blue-grey">send</button>
+          <input type="text" placeholder="Comentar" v-model="comentPost.text">
+          <button v-if="comentPost.text" v-on:click="addComment(keyPost)" class="btn waves-effect waves-light blue-grey">send</button>
         </p>
 
         <p v-if="showComments">
           <ul class="collection">
-            <li class="collection-item avatar">
-              <img src="https://materializecss.com/images/yuna.jpg" alt="" class="circle">
-              <span class="title">Maria Clara <small> - 12h30 12/02/2020</small></span>
+            <li class="collection-item avatar" v-for=" item in conteudoFull.expresses">
+              <img :src="urlApi + '/full/files/' + item.user.id + '.jpeg'" alt="" class="circle">
+              <span class="title">{{ item.user.username }}<small> - {{ item.dateTimeExpress }}</small></span>
               <p>
-                Gostei desse contéudo
+                  {{ item.text }}
               </p>
             </li>
           </ul>
@@ -64,12 +64,18 @@
       return {
         liked : 'favorite_border',
         totalCurtidas : 0,
-        showComments : false
+        showComments : false,
+        urlApi : '',
+        comentPost : {
+          text : '',
+          idPostage : this.keyPost
+        }
       }
     },
     created() {
       // this.getTotalCurtidas (); conteudo hoje já é carregado na requisição de postagens
       // this.isLikePost (); conteudo hoje já é carregado na requisição de postagens
+      this.urlApi = this.$urlApi;
       this.totalCurtidas = this.countLikes;
 
       let _perfil = this.$store.getters.getPerfil;
@@ -79,8 +85,33 @@
         }
       });
 
+
+
     },
     methods : {
+      addComment (id) {
+
+        let authStr = 'Bearer '.concat(this.$store.getters.getToken);
+        let url = this.$urlApi + '/expresss/express';
+
+        this.$http.post(url,
+          JSON.stringify(this.comentPost),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept' : 'application/json',
+              'Authorization' : authStr
+            }
+          })
+          .then( response => {
+            if (response.status === 200) {
+              this.conteudoFull.expresses = response.data;
+            }
+          } )
+          .catch( e => {
+            console.log("Houve um erro ao publicar um post")
+          } );
+      },
       getTotalCurtidas () {
         let authStr = 'Bearer '.concat(this.$store.getters.getToken);
         let url = this.$urlApi.concat("/enjoys/enjoy", "/", this.keyPost, "/count");

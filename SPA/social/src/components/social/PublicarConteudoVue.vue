@@ -50,7 +50,6 @@
           })
           .then( response => {
             if (response.status === 200) {
-              console.log("Post Publicado => " + response.data);
               this.conteudo = { id : 0, title : '', text : '', link : '', imagem : '' };
               this.$store.commit("setConteudosTemp", response.data);
             }
