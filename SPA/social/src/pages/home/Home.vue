@@ -46,6 +46,13 @@
 <!--                                     title-post="Viagem de Férias">-->
 <!--          </card-conteudo-detalhe-vue>-->
 <!--        </card-conteudo-vue>-->
+      <div v-scroll="handleScroll" v-if="!listaconteudoLocal.last" class="center-align">
+        <button v-on:click="loadPagination" class="btn waves-effect waves-light blue-grey">Mais ...</button>
+      </div>
+<!--      <div v-else class="center-align">//com esse linha o só é mostrado a piga que esta solicitando-->
+<!--        <button v-on:click="loadPostages(0)" class="btn waves-effect waves-light blue-grey">Inicio</button>-->
+<!--      </div>-->
+
     </span>
 
   </site-template>
@@ -69,7 +76,7 @@
         this.imagem = this.$store.getters.getPerfil.imagem;
         this.username = this.$store.getters.getPerfil.username;
         // Carregando paginas de postagens
-        this.loadPostages ();
+        this.loadPostages (0);
       }
     },
     data () {
@@ -87,6 +94,8 @@
         usuarioSession : '',
         username : '',
         imagem : '',
+        listaconteudoLocal: '',
+        stopScroll: false
       }
     },
     components: {
@@ -97,9 +106,39 @@
       GridVue
     },
     methods: {
-      loadPostages () {
+      // handleScroll : function(evt, el) {
+      //   if (window.scrollY > 50) {
+      //     el.setAttribute('style','opacity: 1; transform: translate3d(0, -10px, 0)');
+      //   }
+      //    return window.scrollY > 100;
+      // },
+      handleScroll() {
+        // console.log("scrollY: " + window.scrollY);
+        // console.log("clientHeight: " + document.body.clientHeight);
+        let scrolly = window.scrollY;
+        let tela = document.body.clientHeight;
+        if ((tela - (tela * 0.20)) <= scrolly && !this.stopScroll) {
+          // console.log("Fazendo atualização");
+          this.stopScroll = true;
+          this.loadPagination();
+        }
+      },
+      loadPagination() {
+        if (!this.listaconteudoLocal.last) {
+            let totalPages = this.listaconteudoLocal.totalPages - 1 ;
+            let pageCurrent = parseInt(this.listaconteudoLocal.number);
+            let pageSelection = 0;
+            if (pageCurrent >= totalPages) {
+              pageSelection = 0;
+            } else {
+              pageSelection = ++pageCurrent;
+            }
+            this.loadPostages(pageSelection);
+        }
+      },
+      loadPostages (pag) {
         let authStr = 'Bearer '.concat(this.$store.getters.getToken);
-        let url = this.$urlApi + '/postages/all';
+        let url = this.$urlApi + '/postages/all?pag=' + pag;
 
         this.$http.get(url,
           {
@@ -111,7 +150,14 @@
           })
           .then( response => {
             if (response.status === 200 && response.data && response.data.content) {
-              this.$store.commit("setConteudosTemp", response.data.content);
+              if (pag === 0) {
+                  this.$store.commit("setConteudosTemp", '');
+                  this.$store.commit("setConteudosTemp", response.data.content); //com esse linha o só é mostrado a piga que esta solicitando
+              } else {
+                  this.$store.commit("setPagianacaoConteudosTemp", response.data.content);
+              }
+              this.listaconteudoLocal = response.data;
+              this.stopScroll = false;
             }
           } )
           .catch( e => {

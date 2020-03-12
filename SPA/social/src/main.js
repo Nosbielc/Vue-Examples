@@ -45,9 +45,25 @@ var store = {
     },
     setConteudosTemp(state, n) {
       state.conteudosTemp = n;
+    },
+    setPagianacaoConteudosTemp(state, lista) {
+      for (let item of lista){
+        state.conteudosTemp.push(item);
+      }
     }
   }
-}
+};
+
+Vue.directive('scroll', {
+  inserted: function (el, binding) {
+    let f = function (evt, el) {
+      if (binding.value(evt, el)) {
+        window.removeEventListener('scroll', f);
+      }
+    };
+    window.addEventListener('scroll', f);
+  }
+});
 
 /* eslint-disable no-new */
 new Vue({
