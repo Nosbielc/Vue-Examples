@@ -4,13 +4,13 @@
     <span slot="menuesquerdo">
         <div class="row valign-wrapper">
           <grid-vue size="4">
-            <router-link :to="'/pagina/'+this.perfilData.id">
+            <router-link :to="'/pagina/'+this.idUsuarioPagina">
               <img v-if="imagem" :src="imagem" :alt="username" class="circle responsive-img"> <!-- notice the "circle" class -->
             </router-link>
           </grid-vue>
           <grid-vue size="8">
             <span class="black-text">
-              <router-link :to="'/pagina/'+this.perfilData.id">
+              <router-link :to="'/pagina/'+this.idUsuarioPagina">
                 <h5 v-if="username" class="black-text">{{username}}</h5>
               </router-link>
               Descrição do perfil
@@ -39,23 +39,23 @@
           </card-conteudo-detalhe-vue>
         </card-conteudo-vue>
 
-<!--        <card-conteudo-vue imgPerfil="https://materializecss.com/images/yuna.jpg"-->
-<!--                           nomePerfil="Maria das Graças" datePost="17/02/2020 13:30"-->
-<!--                           imgPost="https://materializecss.com/images/sample-1.jpg"-->
-<!--                           titlePost="Viagem de Férias"-->
-<!--                           commentPost="É um sonho esta em um lugar como esse. Deus é lindo"-->
-<!--                           countLikes="12359" keyPost="1">-->
-<!--          <card-conteudo-detalhe-vue comment-post="É um sonho esta em um lugar como esse. Deus é lindo"-->
-<!--                                     img-post="https://materializecss.com/images/sample-1.jpg"-->
-<!--                                     title-post="Viagem de Férias">-->
-<!--          </card-conteudo-detalhe-vue>-->
-<!--        </card-conteudo-vue>-->
-<!--      <div v-scroll="handleScroll" v-if="!listaconteudoLocal.last" class="center-align">-->
-<!--        <button v-on:click="loadPagination" class="btn waves-effect waves-light blue-grey">Mais ...</button>-->
-<!--      </div>-->
-<!--      <div v-else class="center-align">//com esse linha o só é mostrado a piga que esta solicitando-->
-<!--        <button v-on:click="loadPostages(0)" class="btn waves-effect waves-light blue-grey">Inicio</button>-->
-<!--      </div>-->
+      <!--        <card-conteudo-vue imgPerfil="https://materializecss.com/images/yuna.jpg"-->
+      <!--                           nomePerfil="Maria das Graças" datePost="17/02/2020 13:30"-->
+      <!--                           imgPost="https://materializecss.com/images/sample-1.jpg"-->
+      <!--                           titlePost="Viagem de Férias"-->
+      <!--                           commentPost="É um sonho esta em um lugar como esse. Deus é lindo"-->
+      <!--                           countLikes="12359" keyPost="1">-->
+      <!--          <card-conteudo-detalhe-vue comment-post="É um sonho esta em um lugar como esse. Deus é lindo"-->
+      <!--                                     img-post="https://materializecss.com/images/sample-1.jpg"-->
+      <!--                                     title-post="Viagem de Férias">-->
+      <!--          </card-conteudo-detalhe-vue>-->
+      <!--        </card-conteudo-vue>-->
+      <!--      <div v-scroll="handleScroll" v-if="!listaconteudoLocal.last" class="center-align">-->
+      <!--        <button v-on:click="loadPagination" class="btn waves-effect waves-light blue-grey">Mais ...</button>-->
+      <!--      </div>-->
+      <!--      <div v-else class="center-align">//com esse linha o só é mostrado a piga que esta solicitando-->
+      <!--        <button v-on:click="loadPostages(0)" class="btn waves-effect waves-light blue-grey">Inicio</button>-->
+      <!--      </div>-->
           <div v-scroll="handleScroll">
 
           </div>
@@ -74,14 +74,15 @@
   import GridVue from "../../components/layouts/GridVue";
 
   export default {
-    name: 'Home',
+    name: 'Pagina',
     created () {
       this.perfilData = this.$store.getters.getPerfil;
       this.usuarioSession = this.$store.getters.getUsuario;
       if (this.perfilData) {
+        this.loadPerfilPagina(this.$route.params.id);
         this.perfilData.imagem = this.$urlApi + '/full/files/' + this.$store.getters.getPerfil.id + '.jpeg';
-        this.imagem = this.$store.getters.getPerfil.imagem;
-        this.username = this.$store.getters.getPerfil.username;
+        // this.imagem = this.$store.getters.getPerfil.imagem;
+        // this.username = this.$store.getters.getPerfil.username;
         // Carregando paginas de postagens
         this.loadPostages (0);
       }
@@ -101,6 +102,8 @@
         usuarioSession : '',
         username : '',
         imagem : '',
+        email : '',
+        idUsuarioPagina : 0,
         listaconteudoLocal: '',
         stopScroll: false
       }
@@ -113,12 +116,6 @@
       GridVue
     },
     methods: {
-      // handleScroll : function(evt, el) {
-      //   if (window.scrollY > 50) {
-      //     el.setAttribute('style','opacity: 1; transform: translate3d(0, -10px, 0)');
-      //   }
-      //    return window.scrollY > 100;
-      // },
       handleScroll() {
         // console.log("scrollY: " + window.scrollY);
         // console.log("clientHeight: " + document.body.clientHeight);
@@ -132,20 +129,44 @@
       },
       loadPagination() {
         if (!this.listaconteudoLocal.last) {
-            let totalPages = this.listaconteudoLocal.totalPages - 1 ;
-            let pageCurrent = parseInt(this.listaconteudoLocal.number);
-            let pageSelection = 0;
-            if (pageCurrent >= totalPages) {
-              pageSelection = 0;
-            } else {
-              pageSelection = ++pageCurrent;
-            }
-            this.loadPostages(pageSelection);
+          let totalPages = this.listaconteudoLocal.totalPages - 1 ;
+          let pageCurrent = parseInt(this.listaconteudoLocal.number);
+          let pageSelection = 0;
+          if (pageCurrent >= totalPages) {
+            pageSelection = 0;
+          } else {
+            pageSelection = ++pageCurrent;
+          }
+          this.loadPostages(pageSelection);
         }
+      },
+      loadPerfilPagina (id) {
+        let authStr = 'Bearer '.concat(this.$store.getters.getToken);
+        let url = this.$urlApi + '/users/user/' + id;
+
+        this.$http.get(url,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept' : 'application/json',
+              'Authorization' : authStr
+            }
+          })
+          .then( response => {
+            if (response.status === 200 && response.data) {
+              this.imagem = this.$urlApi + '/full/files/' + response.data.id + '.jpeg';
+              this.username = response.data.username;
+              this.email = response.data.email;
+              this.idUsuarioPagina = response.data.id;
+            }
+          } )
+          .catch( e => {
+            console.log("Houve um erro a para listar as postagens")
+          } );
       },
       loadPostages (pag) {
         let authStr = 'Bearer '.concat(this.$store.getters.getToken);
-        let url = this.$urlApi + '/postages/all?pag=' + pag;
+        let url = this.$urlApi + '/postages/' + this.$route.params.id + '?pag=' + pag;
 
         this.$http.get(url,
           {
@@ -158,10 +179,10 @@
           .then( response => {
             if (response.status === 200 && response.data && response.data.content) {
               if (pag === 0) {
-                  this.$store.commit("setConteudosTemp", '');
-                  this.$store.commit("setConteudosTemp", response.data.content); //com esse linha o só é mostrado a piga que esta solicitando
+                this.$store.commit("setConteudosTemp", '');
+                this.$store.commit("setConteudosTemp", response.data.content); //com esse linha o só é mostrado a piga que esta solicitando
               } else {
-                  this.$store.commit("setPagianacaoConteudosTemp", response.data.content);
+                this.$store.commit("setPagianacaoConteudosTemp", response.data.content);
               }
               this.listaconteudoLocal = response.data;
               this.stopScroll = false;
@@ -187,3 +208,4 @@
     transition: 1.5s all cubic-bezier(0.39, 0.575, 0.565, 1);
   }
 </style>
+

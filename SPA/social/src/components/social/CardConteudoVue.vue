@@ -4,11 +4,15 @@
       <div class="card-content">
         <div class="row valign-wrapper">
           <grid-vue size="1">
-            <img :src="imgPerfil" :alt="nomePerfil" class="circle responsive-img"> <!-- notice the "circle" class -->
+            <router-link :to="'/pagina/'+this.conteudoFull.user.id">
+              <img :src="imgPerfil" :alt="nomePerfil" class="circle responsive-img"> <!-- notice the "circle" class -->
+            </router-link>
           </grid-vue>
           <grid-vue size="11">
             <span class="black-text">
-                 <strong>{{nomePerfil}}</strong> - <small>{{datePost}}</small>
+              <router-link :to="'/pagina/'+this.conteudoFull.user.id">
+                 <strong class="black-text">{{nomePerfil}}</strong> - <small class="black-text">{{datePost}}</small>
+              </router-link>
             </span>
           </grid-vue>
         </div>
