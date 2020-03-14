@@ -35,3 +35,7 @@ npm install axios --save
 ###Install Vuex -> https://vuex.vuejs.org/
 
 npm install vuex --save
+
+###Install Slug -> https://www.npmjs.com/package/slug
+
+npm install slug --save

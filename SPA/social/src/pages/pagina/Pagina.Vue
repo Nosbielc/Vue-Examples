@@ -13,10 +13,20 @@
               <router-link :to="'/pagina/'+this.idUsuarioPagina">
                 <h5 v-if="username" class="black-text">{{username}}</h5>
               </router-link>
-              Descrição do perfil
+              <button v-if="showBtnSeguir" v-on:click="friend" class="btn">{{descBtnSeguir}}</button>
             </span>
           </grid-vue>
         </div>
+    </span>
+
+    <span slot="menuesquerdoamigos">
+      <h4>Seguindo</h4>
+      <li v-for="amigo in listaAmigos">
+         <router-link :to="'/pagina/'+amigo.userFriend.id" class="black-text">
+           {{amigo.userFriend.username}}
+         </router-link>
+      </li>
+      <li v-if="!listaAmigos.length">Nenhum Usuário</li>
     </span>
 
     <span slot="principal" class="box">
@@ -76,13 +86,17 @@
   export default {
     name: 'Pagina',
     created () {
+
+      this.idUsuarioPagina = this.$route.params.id;
       this.perfilData = this.$store.getters.getPerfil;
       this.usuarioSession = this.$store.getters.getUsuario;
       if (this.perfilData) {
+        this.loadAmigos(this.idUsuarioPagina);
+        if (this.perfilData.id != this.idUsuarioPagina) {
+          this.showBtnSeguir = true;
+        }
         this.loadPerfilPagina(this.$route.params.id);
         this.perfilData.imagem = this.$urlApi + '/full/files/' + this.$store.getters.getPerfil.id + '.jpeg';
-        // this.imagem = this.$store.getters.getPerfil.imagem;
-        // this.username = this.$store.getters.getPerfil.username;
         // Carregando paginas de postagens
         this.loadPostages (0);
       }
@@ -105,7 +119,10 @@
         email : '',
         idUsuarioPagina : 0,
         listaconteudoLocal: '',
-        stopScroll: false
+        stopScroll: false,
+        showBtnSeguir: false,
+        descBtnSeguir: 'Seguir',
+        listaAmigos: []
       }
     },
     components: {
@@ -191,6 +208,60 @@
           .catch( e => {
             console.log("Houve um erro a para listar as postagens")
           } );
+      },
+      friend() {
+        let authStr = 'Bearer '.concat(this.$store.getters.getToken);
+        let url = this.$urlApi + '/friends/friend/' + this.idUsuarioPagina;
+
+        console.log(url);
+
+        this.$http.post(url,
+          '',
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept' : 'application/json',
+              'Authorization' : authStr
+            }
+          })
+          .then( response => {
+            if (response.status === 200) {
+              this.loadAmigos(this.idUsuarioPagina);
+            }
+          } )
+          .catch( e => {
+            console.log("Houve um erro ao seguir")
+          } );
+      },
+      loadAmigos (idDono) {
+        let authStr = 'Bearer '.concat(this.$store.getters.getToken);
+        let url = this.$urlApi + '/friends/friend/' + idDono;
+
+        this.$http.get(url,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept' : 'application/json',
+              'Authorization' : authStr
+            }
+          })
+          .then( response => {
+            if (response.status === 200 && response.data) {
+              this.listaAmigos = response.data;
+              this.testAmigo();
+            }
+          } )
+          .catch( e => {
+            console.log("Houve um erro a para listar amigos")
+          } );
+      },
+      testAmigo() {
+        for( let amigo of this.listaAmigos) {
+          if (amigo.userFriend.id == this.perfilData.id) {
+            this.descBtnSeguir = 'Deixar de Seguir';
+            break;
+          }
+        }
       }
     },
     computed: {

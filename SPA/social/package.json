@@ -1,6 +1,6 @@
 {
   "name": "social",
-  "version": "0.1.0.alpha",
+  "version": "0.2.0",
   "description": "A Vue.js project",
   "author": "Cleibson Gomes da Silva <cleibson.gomes.da.silva@gmail.com>",
   "private": true,
@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "slug": "^2.1.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.1.2"

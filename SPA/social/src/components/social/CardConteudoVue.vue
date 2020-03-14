@@ -4,7 +4,7 @@
       <div class="card-content">
         <div class="row valign-wrapper">
           <grid-vue size="1">
-            <router-link :to="'/pagina/'+this.conteudoFull.user.id">
+            <router-link :to="'/pagina/'+this.conteudoFull.user.id +'/' + $slugApi(nomePerfil, {lower: true}) ">
               <img :src="imgPerfil" :alt="nomePerfil" class="circle responsive-img"> <!-- notice the "circle" class -->
             </router-link>
           </grid-vue>
