@@ -13,7 +13,10 @@
               <router-link :to="'/pagina/'+this.idUsuarioPagina">
                 <h5 v-if="username" class="black-text">{{username}}</h5>
               </router-link>
-              <button v-if="showBtnSeguir" v-on:click="friend" class="btn">{{descBtnSeguir}}</button>
+              <span v-if="isMyPerfil">
+                <button v-if="!showBtnSeguir" v-on:click="friend" class="btn waves-effect waves-light blue-grey">Seguir</button>
+                <button v-if="showBtnSeguir" v-on:click="friend" class="btn waves-effect waves-light blue-grey">Deixar de Seguir</button>
+              </span>
             </span>
           </grid-vue>
         </div>
@@ -86,20 +89,10 @@
   export default {
     name: 'Pagina',
     created () {
-
-      this.idUsuarioPagina = this.$route.params.id;
-      this.perfilData = this.$store.getters.getPerfil;
-      this.usuarioSession = this.$store.getters.getUsuario;
-      if (this.perfilData) {
-        this.loadAmigos(this.idUsuarioPagina);
-        if (this.perfilData.id != this.idUsuarioPagina) {
-          this.showBtnSeguir = true;
-        }
-        this.loadPerfilPagina(this.$route.params.id);
-        this.perfilData.imagem = this.$urlApi + '/full/files/' + this.$store.getters.getPerfil.id + '.jpeg';
-        // Carregando paginas de postagens
-        this.loadPostages (0);
-      }
+      this.carregaPagina();
+    },
+    watch : {
+      '$route' : 'carregaPagina'
     },
     data () {
       return {
@@ -121,8 +114,8 @@
         listaconteudoLocal: '',
         stopScroll: false,
         showBtnSeguir: false,
-        descBtnSeguir: 'Seguir',
-        listaAmigos: []
+        listaAmigos: [],
+        isMyPerfil: false
       }
     },
     components: {
@@ -133,6 +126,19 @@
       GridVue
     },
     methods: {
+      carregaPagina () {
+        this.idUsuarioPagina = this.$route.params.id;
+        this.perfilData = this.$store.getters.getPerfil;
+        this.usuarioSession = this.$store.getters.getUsuario;
+        if (this.perfilData) {
+          this.loadAmigos(this.idUsuarioPagina);
+          this.isMyPerfil = this.perfilData.id != this.idUsuarioPagina;
+          this.loadPerfilPagina(this.$route.params.id);
+          this.perfilData.imagem = this.$urlApi + '/full/files/' + this.$store.getters.getPerfil.id + '.jpeg';
+          // Carregando paginas de postagens
+          this.loadPostages(0);
+        }
+      },
       handleScroll() {
         // console.log("scrollY: " + window.scrollY);
         // console.log("clientHeight: " + document.body.clientHeight);
@@ -247,8 +253,8 @@
           })
           .then( response => {
             if (response.status === 200 && response.data) {
-              this.listaAmigos = response.data;
-              this.testAmigo();
+              this.listaAmigos = response.data.friendList;
+              this.showBtnSeguir = response.data.isMyFriend;
             }
           } )
           .catch( e => {
