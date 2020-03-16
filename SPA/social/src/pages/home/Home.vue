@@ -29,6 +29,16 @@
       <li v-if="!listaAmigos.length">Nenhum Usuário</li>
     </span>
 
+    <span slot="menuesquerdofolowers">
+      <h4>Seguidores</h4>
+      <li v-for="seguidor in listaSeguidores" >
+         <router-link :to="'/pagina/'+seguidor.user.id" class="black-text">
+           {{seguidor.user.username}}
+         </router-link>
+      </li>
+      <li v-if="!listaSeguidores.length">Nenhum Usuário</li>
+    </span>
+
     <span slot="principal" class="box">
       <publicar-conteudo-vue/>
 
@@ -89,7 +99,8 @@
       this.perfilData = this.$store.getters.getPerfil;
       this.usuarioSession = this.$store.getters.getUsuario;
       if (this.perfilData) {
-        this.loadAmigos();
+        this.loadAmigos ();
+        this.loadFolowers ();
         this.perfilData.imagem = this.$urlApi + '/full/files/' + this.$store.getters.getPerfil.id + '.jpeg';
         this.imagem = this.$store.getters.getPerfil.imagem;
         this.username = this.$store.getters.getPerfil.username;
@@ -114,7 +125,8 @@
         imagem : '',
         listaconteudoLocal: '',
         stopScroll: false,
-        listaAmigos: []
+        listaAmigos: [],
+        listaSeguidores: []
       }
     },
     components: {
@@ -198,6 +210,27 @@
           .then( response => {
             if (response.status === 200 && response.data) {
               this.listaAmigos = response.data
+            }
+          } )
+          .catch( e => {
+            console.log("Houve um erro a para listar amigos")
+          } );
+      },
+      loadFolowers () {
+        let authStr = 'Bearer '.concat(this.$store.getters.getToken);
+        let url = this.$urlApi + '/friends/followers';
+
+        this.$http.get(url,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept' : 'application/json',
+              'Authorization' : authStr
+            }
+          })
+          .then( response => {
+            if (response.status === 200 && response.data) {
+              this.listaSeguidores = response.data
             }
           } )
           .catch( e => {

@@ -18,6 +18,9 @@
             <card-menu-vue>
               <slot name="menuesquerdoamigos"/>
             </card-menu-vue>
+            <card-menu-vue>
+              <slot name="menuesquerdofolowers"/>
+            </card-menu-vue>
           </grid-vue>
           <grid-vue size="8">
              <slot name="principal"/>
